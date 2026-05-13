@@ -4,7 +4,9 @@ import Checkbox from '../Elements/CheckBox'
 import Button from '../Elements/Button'
 
 
-function FormSignIn() {
+function FormSignIn(props) {
+    const { onNavigate } = props
+    
   return (
     <div>
         {/* form start */}
@@ -83,7 +85,11 @@ function FormSignIn() {
         {/* sign in with google end */}
         {/* link start */}
         <div className="flex justify-center">
-          <a className="text-primary text-sm font-bold">Create an account</a>
+          <a className="text-primary text-sm font-bold cursor-pointer"
+          onClick={() => onNavigate("signUp")}
+          >
+            Create an account
+          </a>
         </div>
         {/* link end */}
     </div>

@@ -1,14 +1,14 @@
 import React from 'react'
 import AuthLayout from '../components/Layouts/AuthLayout'
-import FormSignIn from '../components/Fragments/FormSignIn'
+import FormSignUp from '../components/Fragments/FormSignUp'
 
-function SignIn(props) {
+function SignUp(props) {
   const { onNavigate } = props
   return (
     <AuthLayout>
-      <FormSignIn onNavigate={onNavigate} />
+      <FormSignUp onNavigate={onNavigate} />
     </AuthLayout>
   )
 }
 
-export default SignIn
+export default SignUp
