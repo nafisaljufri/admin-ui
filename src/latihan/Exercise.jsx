@@ -1,5 +1,5 @@
 import PostCard from "./PostCard";
-import postsData from "./data/postsData";
+import postsData from "../data/postsData";
 
 function Exercise() {
   return (
