@@ -26,3 +26,83 @@ html {
   --color-special-red: #e73d1c;
   --color-special-red2: #b83016;
 }
+
+.theme-green {
+  --color-primary: #299d91;
+}
+
+.theme-blue {
+  --color-primary: #1e90ff;
+}
+
+.theme-purple {
+  --color-primary: #6a5acd;
+}
+
+.theme-pink {
+  --color-primary: #db7093;
+}
+
+.theme-brown {
+  --color-primary: #8b4513;
+}
+
+.theme-gold {
+  --color-primary: #d4af37;
+}
+
+.theme-champagne {
+  --color-primary: #c6a664;
+}
+
+.theme-bronze {
+  --color-primary: #cd7f32;
+}
+
+.theme-emerald {
+  --color-primary: #0f766e;
+}
+
+.theme-navy {
+  --color-primary: #1e3a5f;
+}
+
+.theme-royal {
+  --color-primary: #312e81;
+}
+
+.theme-burgundy {
+  --color-primary: #7f1d1d;
+}
+
+.theme-wine {
+  --color-primary: #722f37;
+}
+
+.theme-slate {
+  --color-primary: #475569;
+}
+
+.theme-charcoal {
+  --color-primary: #36454f;
+}
+
+.theme-graphite {
+  --color-primary: #2e3440;
+}
+
+.theme-cyan {
+  --color-primary: #0891b2;
+}
+
+.theme-indigo {
+  --color-primary: #4338ca;
+}
+
+.theme-teal {
+  --color-primary: #0d9488;
+}
+
+.theme-silver {
+  --color-primary: #c0c0c0;
+}
