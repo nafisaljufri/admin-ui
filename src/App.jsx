@@ -4,13 +4,24 @@ import SignUpPage from "./pages/signUp";
 import ErrorPage from "./pages/error";
 import DashboardPage from "./pages/dashboard";
 import BalancePage from "./pages/balance";
-import { createBrowserRouter, Link, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "./context/authContext";
+
+function ProtectedRoute({ children }) {
+  const { user } = useContext(AuthContext);
+  return user ? children : <Navigate to="/login" replace />;
+}
 
 function App() {
   const myRouter = createBrowserRouter([
-   {
+    {
       path: "/",
-      element: <DashboardPage />,
+      element: (
+        <ProtectedRoute>
+          <DashboardPage />
+        </ProtectedRoute>
+      ),
       errorElement: <ErrorPage />,
     },
     {
@@ -23,7 +34,11 @@ function App() {
     },
     {
       path: "/balance",
-      element: <BalancePage />,
+      element: (
+        <ProtectedRoute>
+          <BalancePage />
+        </ProtectedRoute>
+      ),
     },
   ]);
 

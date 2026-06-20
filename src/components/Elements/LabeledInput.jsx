@@ -2,14 +2,16 @@ import React from "react";
 import Input from "./Input";
 
 function LabeledInput(props) {
-  const { label, id, ...rest } = props;
+  const { label, id, field, form, ...rest } = props;
+  
+  const finalId = id || field?.name;
 
   return (
     <>
-      <label htmlFor={id} className="block text-sm mb-2">
+      <label htmlFor={finalId} className="block text-sm mb-2">
         {label}
       </label>
-      <Input id={id} {...rest} />
+      <Input id={finalId} {...field} {...rest} />
     </>
   );
 }

@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import MainLayout from '../components/Layouts/MainLayout'
-import Card from '../components/Elements/Card'
 import CardBalance from '../components/Fragments/CardBalance'
 import CardGoal from '../components/Fragments/CardGoal'
 import CardUpcomingBill from '../components/Fragments/CardUpcomingBill'
@@ -15,8 +14,40 @@ import {
   goals,
   expensesStatistics,
 } from '../data'
+import AppSnackbar from '../components/Elements/AppSnackbar'
 
-function dashboard() {
+function Dashboard() {
+  const [goalData, setGoalData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  })
+
+  const handleCloseSnackbar = () => {
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  };
+
+  useEffect(() => {
+    const fetchGoals = async () => {
+      try {
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        setGoalData(goals)
+      } catch (error) {
+        setSnackbar({
+          open: true,
+          message: 'Failed to load goals',
+          severity: 'error'
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchGoals()
+  }, [])
+
   return (
     <>
       <MainLayout>
@@ -25,7 +56,7 @@ function dashboard() {
             <CardBalance data={balances} />
           </div>
           <div className="sm:col-span-4">
-            <CardGoal data={goals} />
+            <CardGoal data={goalData} loading={loading} />
           </div>
           <div className="sm:col-span-4">
             <CardUpcomingBill data={bills} />            
@@ -41,8 +72,14 @@ function dashboard() {
           </div>
         </div>
       </MainLayout>
+      <AppSnackbar
+        open={snackbar.open}
+        message={snackbar.message}
+        severity={snackbar.severity}
+        onClose={handleCloseSnackbar}
+      />
     </>
   )
 }
 
-export default dashboard
+export default Dashboard

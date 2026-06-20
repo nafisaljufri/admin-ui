@@ -3,11 +3,14 @@ import Logo from "../Elements/Logo";
 import Input from "../Elements/Input";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import Icon from "../Elements/Icon";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../context/themeContext";
+import { AuthContext } from "../../context/authContext";
 
 function MainLayout(props) {
   const { children } = props;
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const themes = [
     { name: "theme-green", bgcolor: "bg-[#299D91]", color: "#299D91" },
@@ -29,6 +32,11 @@ function MainLayout(props) {
     { id: 6, name: "Goals", icon: <Icon.Goal />, link: "/goal" },
     { id: 7, name: "Settings", icon: <Icon.Setting />, link: "/setting" },
   ];
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
   
   return (
     <>
@@ -73,19 +81,19 @@ function MainLayout(props) {
             </div>
           </div>
           <div>
-            <NavLink to="/login">
+            <div onClick={handleLogout} className="cursor-pointer">
             	<div className="flex bg-special-bg3 text-white px-4 py-3 rounded-md">
                 <div className="mx-auto sm:mx-0 text-primary">
                   <Icon.Logout />
                 </div>
                 <div className="ms-3 hidden sm:block">Logout</div>
               </div>
-            </NavLink>
+            </div>
             <div className="border my-10 border-b-special-bg"></div>
             	<div className="flex justify-between items-center">
               <div>Avatar</div>
               <div className="hidden sm:block">
-                <div>Username</div>
+                <div>{user?.name || 'User'}</div>
                 <div>View Profile</div>
               </div>
               <div className="hidden sm:block">
@@ -97,7 +105,7 @@ function MainLayout(props) {
 			<div className="bg-special-mainBg flex-1 flex flex-col">
         <header className="border border-b border-gray-05 px-6 py-7 flex justify-between items-center">
           <div className="flex items-center">
-            <div className="font-bold text-2xl me-6">Username</div> 
+            <div className="font-bold text-2xl me-6">{user?.name || 'User'}</div> 
             <div className="text-gray-03 flex">
               <Icon.ChevronRight size={20} />
               <span>May 19, 2023</span>
