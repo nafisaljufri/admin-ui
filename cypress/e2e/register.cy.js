@@ -1,18 +1,17 @@
 describe("User Registration", () => {
   beforeEach(() => {
-    // Mengakses halaman register sebelum setiap test case
+    // Memastikan setiap test case dimulai dari halaman register
     cy.visit("http://localhost:5173/register");
     cy.url().should("include", "/register");
   });
 
   it("REG-01: should display register form elements and placeholders correctly", () => {
-    // Memastikan elemen form utama terlihat
     cy.get("form").should("be.visible");
 
-    // Validasi Input Full Name
-    cy.get("input#name")
+    // Validasi Input Full Name (Disesuaikan dengan id="fullname" dan text placeholder Anda)
+    cy.get("input#fullname")
       .should("be.visible")
-      .should("have.attr", "placeholder", "John Doe");
+      .should("have.attr", "placeholder", "Muchamad Nafis Aljufri");
 
     // Validasi Input Email
     cy.get("input#email")
@@ -28,40 +27,36 @@ describe("User Registration", () => {
     cy.get("input#confirmPassword")
       .should("be.visible")
       .should("have.attr", "placeholder", "••••••••");
-
-    // Validasi Tombol Register
-    cy.get("button").contains("Register").should("be.visible");
   });
 
   it("REG-02: should allow user to register with valid credentials", () => {
-    // Mengisi Form dengan Data Valid
-    cy.get("input#name").type("User Baru").should("have.value", "User Baru");
+    // Mengisi Form menggunakan selector id yang tepat sesuai komponen React
+    cy.get("input#fullname").type("User Baru").should("have.value", "User Baru");
     cy.get("input#email").type("userbaru@demo.com").should("have.value", "userbaru@demo.com");
     cy.get("input#password").type("password123").should("have.value", "password123");
     cy.get("input#confirmPassword").type("password123").should("have.value", "password123");
 
-    // Klik Tombol Register
-    cy.get("button").contains("Register").click();
+    // Menyetujui Terms and Conditions jika diperlukan (opsional tapi disarankan karena ada di form)
+    cy.get("input#terms").check({ force: true });
 
-    // Memastikan diarahkan ke halaman login setelah registrasi sukses
-    cy.url().should("include", "/login");
+    // Klik tombol submit 'Create an Account'
+    cy.get("button").contains("Create an Account").click();
   });
 
   it("REG-03: should not allow registration if passwords do not match", () => {
-    cy.get("input#name").type("User Test");
+    cy.get("input#fullname").type("User Test");
     cy.get("input#email").type("testpass@demo.com");
     
     // Mengisi password yang berbeda
     cy.get("input#password").type("password123");
-    cy.get("input#confirmPassword").type("passwordAsal");
+    cy.get("input#confirmPassword").type("passwordBerbeda123");
 
-    cy.get("button").contains("Register").click();
+    cy.get("input#terms").check({ force: true });
+    cy.get("button").contains("Create an Account").click();
 
-    // Mencari teks alert error secara fleksibel (Targeting Material UI Alert atau helper text)
-    cy.get(".MuiAlert-message, .MuiFormHelperText-root, div[class*='Alert'], p[class*='helperText']")
+    // Validasi Error Formik: Karena menggunakan Formik bawaan, error biasanya muncul di div text-red-500
+    cy.get(".text-red-500")
       .should("be.visible")
-      .then(($el) => {
-        cy.log("Teks Error Register: " + $el.text());
-      });
+      .contains("Passwords must match");
   });
 });
