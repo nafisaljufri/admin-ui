@@ -4,9 +4,14 @@ import SignUpPage from "./pages/signUp";
 import ErrorPage from "./pages/error";
 import DashboardPage from "./pages/dashboard";
 import BalancePage from "./pages/balance";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./context/authContext";
+import ExpensePage from "./pages/expense";
 
 function ProtectedRoute({ children }) {
   const { user } = useContext(AuthContext);
@@ -37,6 +42,14 @@ function App() {
       element: (
         <ProtectedRoute>
           <BalancePage />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/expense",
+      element: (
+        <ProtectedRoute>
+          <ExpensePage />
         </ProtectedRoute>
       ),
     },

@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "email": "111202315328@mhs.dinus.ac.id",
-  "password": "123456"
+  "password": "nafisaljufri123"
 }
 
 ### logout

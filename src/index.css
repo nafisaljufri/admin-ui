@@ -33,3 +33,63 @@
 .theme-champagne {
   --color-primary: #C6A664;
 }
+
+/* ==========================
+   DARK MODE
+========================== */
+
+.dark {
+    background: #2f2f2f;
+    color: #ffffff;
+}
+
+.dark main {
+    background: #2f2f2f;
+}
+
+.dark header {
+    background: #333333;
+    color: white;
+    border-color: #555;
+}
+
+.dark input {
+    background: #3b3b3b;
+    color: white;
+    border-color: #666;
+}
+
+.dark input::placeholder {
+    color: #bdbdbd;
+}
+
+/* ==========================
+   DARK MODE OVERRIDE
+========================== */
+
+.dark .bg-white {
+  background: #3a3a3a !important;
+}
+
+.dark .text-gray-01 {
+  color: #d0d5dc !important;
+}
+
+.dark .text-gray-02 {
+  color: #ffffff !important;
+}
+
+.dark .text-gray-03 {
+  color: #bfbfbf !important;
+}
+
+.dark .border-gray-05 {
+  border-color: #565656 !important;
+}
+
+.dark .shadow-xl,
+.dark .shadow-lg,
+.dark .shadow-md {
+  box-shadow: none !important;
+}
+

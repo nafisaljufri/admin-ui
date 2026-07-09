@@ -1,16 +1,22 @@
 import React, { useContext, useState } from "react";
 import Logo from "../Elements/Logo";
 import Input from "../Elements/Input";
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import Icon from "../Elements/Icon";
 import { NavLink, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../context/themeContext";
 import { AuthContext } from "../../context/authContext";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 function MainLayout(props) {
   const { children } = props;
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [loadingLogout, setLoadingLogout] = useState(false);
 
   const themes = [
     { name: "theme-green", bgcolor: "bg-[#299D91]", color: "#299D91" },
@@ -21,12 +27,18 @@ function MainLayout(props) {
     { name: "theme-champagne", bgcolor: "bg-[#C6A664]", color: "#C6A664" },
   ];
 
-  const { theme, setTheme}  = useContext(ThemeContext);
+  const { theme, setTheme, darkMode, toggleDarkMode } =
+    useContext(ThemeContext);
 
   const menu = [
     { id: 1, name: "Overview", icon: <Icon.Overview />, link: "/" },
     { id: 2, name: "Balances", icon: <Icon.Balance />, link: "/balance" },
-    { id: 3, name: "Transaction", icon: <Icon.Transaction />, link: "/transaction", },
+    {
+      id: 3,
+      name: "Transaction",
+      icon: <Icon.Transaction />,
+      link: "/transaction",
+    },
     { id: 4, name: "Bills", icon: <Icon.Bill />, link: "/bill" },
     { id: 5, name: "Expenses", icon: <Icon.Expense />, link: "/expense" },
     { id: 6, name: "Goals", icon: <Icon.Goal />, link: "/goal" },
@@ -34,18 +46,24 @@ function MainLayout(props) {
   ];
 
   const handleLogout = () => {
-    logout();
-    navigate('/login');
+    setLoadingLogout(true);
+
+    setTimeout(() => {
+      logout();
+      navigate("/login");
+    }, 1000);
   };
-  
+
   return (
     <>
-	    <div className={`flex min-h-screen ${theme.name}`}>
-			  <aside 
+      <div
+        className={`flex min-h-screen ${theme.name} ${darkMode ? "dark" : ""}`}
+      >
+        <aside
           className="bg-defaultBlack w-28 sm:w-64 text-special-bg2
           flex flex-col justify-between px-7 py-12"
-          >
-      		<div>
+        >
+          <div>
             <div className="mb-10">
               <Logo variant="secondary" />
             </div>
@@ -69,20 +87,42 @@ function MainLayout(props) {
             </nav>
           </div>
           <div>
-            Themes
-            <div className="flex flex-col sm:flex-row gap-2 items-center">
+            <div className="mb-2 text-sm">Themes</div>
+
+            <div className="flex items-center gap-2">
               {themes.map((t) => (
                 <div
                   key={t.name}
-                  className={`${t.bgcolor} w-6 h-6 rounded-md cursor-pointer mb-2`}
+                  className={`${t.bgcolor} w-6 h-6 rounded-md cursor-pointer transition-transform hover:scale-110`}
                   onClick={() => setTheme(t)}
-                ></div>
+                />
               ))}
+
+              <button
+                onClick={toggleDarkMode}
+                className="ml-1 flex items-center justify-center cursor-pointer transition-transform hover:scale-110"
+              >
+                {darkMode ? (
+                  <LightModeIcon
+                    sx={{
+                      color: "#E5E7EB",
+                      fontSize: 20,
+                    }}
+                  />
+                ) : (
+                  <DarkModeIcon
+                    sx={{
+                      color: "#E5E7EB",
+                      fontSize: 20,
+                    }}
+                  />
+                )}
+              </button>
             </div>
           </div>
           <div>
             <div onClick={handleLogout} className="cursor-pointer">
-            	<div className="flex bg-special-bg3 text-white px-4 py-3 rounded-md">
+              <div className="flex bg-special-bg3 text-white px-4 py-3 rounded-md">
                 <div className="mx-auto sm:mx-0 text-primary">
                   <Icon.Logout />
                 </div>
@@ -90,10 +130,10 @@ function MainLayout(props) {
               </div>
             </div>
             <div className="border my-10 border-b-special-bg"></div>
-            	<div className="flex justify-between items-center">
+            <div className="flex justify-between items-center">
               <div>Avatar</div>
               <div className="hidden sm:block">
-                <div>{user?.name || 'User'}</div>
+                <div>{user?.name || "User"}</div>
                 <div>View Profile</div>
               </div>
               <div className="hidden sm:block">
@@ -102,25 +142,43 @@ function MainLayout(props) {
             </div>
           </div>
         </aside>
-			<div className="bg-special-mainBg flex-1 flex flex-col">
-        <header className="border border-b border-gray-05 px-6 py-7 flex justify-between items-center">
-          <div className="flex items-center">
-            <div className="font-bold text-2xl me-6">{user?.name || 'User'}</div> 
-            <div className="text-gray-03 flex">
-              <Icon.ChevronRight size={20} />
-              <span>May 19, 2023</span>
-            </div> 
-          </div>
-          <div className="flex items-center">
-            <div className="me-10">
-              <NotificationsActiveIcon className="text-primary scale-110" />
+        <div
+          className={`flex-1 flex flex-col ${
+            darkMode ? "bg-[#2F2F2F]" : "bg-special-mainBg"
+          }`}
+        >
+          <header
+            className={`border-b px-6 py-7 flex justify-between items-center ${
+              darkMode
+                ? "bg-[#333333] border-gray-700 text-white"
+                : "bg-special-mainBg border-gray-05"
+            }`}
+          >
+            <div className="flex items-center">
+              <div className="font-bold text-2xl me-6">
+                {user?.name || "User"}
+              </div>
+              <div className="text-gray-03 flex">
+                <Icon.ChevronRight size={20} />
+                <span>May 19, 2023</span>
+              </div>
             </div>
-            <Input backgroundColor="bg-white" border="border-white" />
-          </div>
-        </header>
-        <main className="flex-1 px-6 py-4">{children}</main>    
-    </div>
-    </div>
+            <div className="flex items-center">
+              <div className="me-10">
+                <NotificationsActiveIcon className="text-primary scale-110" />
+              </div>
+              <Input backgroundColor="bg-white" border="border-white" />
+            </div>
+          </header>
+          <main className="flex-1 px-6 py-4">{children}</main>
+        </div>
+      </div>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loadingLogout}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 }

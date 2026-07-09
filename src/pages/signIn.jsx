@@ -18,8 +18,8 @@ function SignIn() {
     setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
-  const handleLogin = (email, password) => {
-    const result = login(email, password)
+  const handleLogin = async (email, password) => {
+    const result = await login(email, password)
     if (result.success) {
       setSnackbar({
         open: true,

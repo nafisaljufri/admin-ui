@@ -1,46 +1,48 @@
-import React, { useContext, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import AuthLayout from '../components/Layouts/AuthLayout'
-import FormSignUp from '../components/Fragments/FormSignUp'
-import { AuthContext } from '../context/authContext'
-import AppSnackbar from '../components/Elements/AppSnackbar'
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthLayout from "../components/Layouts/AuthLayout";
+import FormSignUp from "../components/Fragments/FormSignUp";
+import { AuthContext } from "../context/authContext";
+import AppSnackbar from "../components/Elements/AppSnackbar";
 
 function SignUp() {
-  const { register } = useContext(AuthContext)
-  const navigate = useNavigate()
+  const { register } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [snackbar, setSnackbar] = useState({
     open: false,
-    message: '',
-    severity: 'success'
-  })
+    message: "",
+    severity: "success",
+  });
 
   const handleCloseSnackbar = () => {
     setSnackbar({
       ...snackbar,
-      open: false
-    })
-  }
+      open: false,
+    });
+  };
 
-  const handleRegister = (name, email, password) => {
-    const result = register(name, email, password)
+  const handleRegister = async (name, email, password) => {
+    const result = await register(name, email, password);
+
     if (result.success) {
       setSnackbar({
         open: true,
-        message: 'Account created successfully!',
-        severity: 'success'
-      })
+        message: result.msg,
+        severity: "success",
+      });
+
       setTimeout(() => {
-        navigate('/')
-      }, 500)
+        navigate("/");
+      }, 1000);
     } else {
       setSnackbar({
         open: true,
         message: result.msg,
-        severity: 'error'
-      })
+        severity: "error",
+      });
     }
-  }
-  
+  };
+
   return (
     <AuthLayout>
       <FormSignUp onSubmit={handleRegister} />
@@ -51,7 +53,7 @@ function SignUp() {
         onClose={handleCloseSnackbar}
       />
     </AuthLayout>
-  )
+  );
 }
 
-export default SignUp
+export default SignUp;
